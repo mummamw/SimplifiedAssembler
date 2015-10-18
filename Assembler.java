@@ -17,33 +17,33 @@ public class Assembler {
 		
 		//Generating Hash tables for maps
 		//registerHash used for getting register's values
-		Hashtable<String, Integer> registerHash = new Hashtable<String, Integer>();
-			registerHash.put("$zero", 00000);
-			registerHash.put("$at", 00001);
-			registerHash.put("$v0", 00010);
-			registerHash.put("$v1", 00011);
-			registerHash.put("$a0", 00100);
-			registerHash.put("$a1", 00101);
-			registerHash.put("$a2", 00110);
-			registerHash.put("$a3", 00111);
-			registerHash.put("$t0", 01000);
-			registerHash.put("$t1", 01001);
-			registerHash.put("$t2", 01010);
-			registerHash.put("$t3", 01011);
-			registerHash.put("$t4", 01100);
-			registerHash.put("$t5", 01101);
-			registerHash.put("$t6", 01110);
-			registerHash.put("$t7", 01111);
-			registerHash.put("$s0", 10000);
-			registerHash.put("$s1", 10001);
-			registerHash.put("$s2", 10010);
-			registerHash.put("$s3", 10011);
-			registerHash.put("$s4", 10100);
-			registerHash.put("$s5", 10101);
-			registerHash.put("$s6", 10110);
-			registerHash.put("$s7", 10111);
-			registerHash.put("$t8", 11000);
-			registerHash.put("$t9", 11001);
+		Hashtable<String, String> registerHash = new Hashtable<String, String>();
+			registerHash.put("$zero", "00000");
+			registerHash.put("$at",   "00001");
+			registerHash.put("$v0",   "00010");
+			registerHash.put("$v1",   "00011");
+			registerHash.put("$a0",   "00100");
+			registerHash.put("$a1",   "00101");
+			registerHash.put("$a2",   "00110");
+			registerHash.put("$a3",   "00111");
+			registerHash.put("$t0",   "01000");
+			registerHash.put("$t1",   "01001");
+			registerHash.put("$t2",   "01010");
+			registerHash.put("$t3",   "01011");
+			registerHash.put("$t4",   "01100");
+			registerHash.put("$t5",   "01101");
+			registerHash.put("$t6",   "01110");
+			registerHash.put("$t7",   "01111");
+			registerHash.put("$s0",   "10000");
+			registerHash.put("$s1",   "10001");
+			registerHash.put("$s2",   "10010");
+			registerHash.put("$s3",   "10011");
+			registerHash.put("$s4",   "10100");
+			registerHash.put("$s5",   "10101");
+			registerHash.put("$s6",   "10110");
+			registerHash.put("$s7",   "10111");
+			registerHash.put("$t8",   "11000");
+			registerHash.put("$t9",   "11001");
 	
 		// Hash Table for J format instructions
 		//op codes should always be 6 bits
