@@ -47,47 +47,72 @@ public class Assembler {
 	
 		// Hash Table for J format instructions
 		//op codes should always be 6 bits
-		Hashtable<String, Integer> jHash = new Hashtable<String, Integer>();
-			jHash.put("j",   000010);
-			jHash.put("jal", 000011);
+		Hashtable<String, String> jHash = new Hashtable<String, String>();
+			jHash.put("j",   "000010");
+			jHash.put("jal", "000011");
 
 		// Hash Table for I format instructions 
 		//op codes should always be 6 bits
-		Hashtable<String, Integer> iHash = new Hashtable<String, Integer>();
-			iHash.put("lw",   100011);
-			iHash.put("sw",   101011);
-			iHash.put("andi", 001100);
-			iHash.put("ori",  001101);
-			iHash.put("lui",  001111);
-			iHash.put("beq",  000100);
-			iHash.put("stli", 001010);
-			iHash.put("addi", 001000);
+		Hashtable<String, String> iHash = new Hashtable<String, String>();
+			iHash.put("lw",   "100011");
+			iHash.put("sw",   "101011");
+			iHash.put("andi", "001100");
+			iHash.put("ori",  "001101");
+			iHash.put("lui",  "001111");
+			iHash.put("beq",  "000100");
+			iHash.put("stli", "001010");
+			iHash.put("addi", "001000");
 		
 		// Hash Table for R format instructions
 		// Mapping "function" field here
-		Hashtable<String, Integer> rHash = new Hashtable<String, Integer>();
-			rHash.put("add", 100000);
-			rHash.put("sub", 100001);
-			rHash.put("and", 100100);
-			rHash.put("or",  100101);
-			rHash.put("sll", 000000);
-			rHash.put("slt", 101010);
-			rHash.put("srl", 000010);
-			rHash.put("jr",  001000);
+		Hashtable<String, String> rHash = new Hashtable<String, String>();
+			rHash.put("add", "100000");
+			rHash.put("sub", "100001");
+			rHash.put("and", "100100");
+			rHash.put("or",  "100101");
+			rHash.put("sll", "000000");
+			rHash.put("slt", "101010");
+			rHash.put("srl", "000010");
+			rHash.put("jr",  "001000");
 	
 		//While loop containing more lines
-		
+		//Variables that will be used in while loop
+		String holderText = "";
+		String holderHex = "";
+			
 		//Flawed in the case of an empty file being passed in
 		String line = reader.readLine();
 		while( (line) != null) {
 			
 		    System.out.println(line); //Keeping for testing. 
 		    
+		    // Splitting string into tokens[] 
 		    String[] tokens = line.split(" |, ");
-		    for(int i = 0; i<3; i++){
+		    
+		    for(int i = 0; i<4; i++){
 			    if(tokens[i] != null){
 			    	System.out.println("Token "+ i +": " + tokens[i]);
+			    	holderText += tokens[i];
 			    }
+			    if(i == 0){
+			    	System.out.println("Token[" + i + "]: " + rHash.get(tokens[i]));
+			    	holderHex += rHash.get(tokens[i]);
+			    }
+			    if(i == 1) {
+			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+			    	holderHex += registerHash.get(tokens[i]);
+			    }
+			    if(i == 2) {
+			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+			    	holderHex += registerHash.get(tokens[i]);
+			    }
+			    if(i == 3){
+			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+			    	holderHex += registerHash.get(tokens[i]);
+			    }
+		    
+			    System.out.println("holderText is currently: " + holderText);
+			    System.out.println("holderHex is currently:" + holderHex);
 		    }
 
 //		    System.out.println("Token 0: " + tokens[0]);
@@ -96,6 +121,9 @@ public class Assembler {
 //		    System.out.println("Token 3: " + tokens[3]);
 		    
 		    
+		    //Writing out 
+		    writer.println("Hello World");
+		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
 		    } catch (IOException e) {
@@ -103,9 +131,9 @@ public class Assembler {
 		    }
 		}
 		
-		System.out.println(registerHash.get("$zero"));
+		//System.out.println(registerHash.get("$zero"));
 	
-		
+		writer.close();
 			
 	}
 	
