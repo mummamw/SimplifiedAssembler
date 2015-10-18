@@ -77,22 +77,34 @@ public class Assembler {
 	
 		//While loop containing more lines
 		
-			//Flawed in the case of an empty file being passed in
-			String line = reader.readLine();
-			while( (line) != null) {
-			    System.out.println(line); //Keeping for testing. 
-			    String[] tokens = line.split(" ");
-			    System.out.println("Token 0: " + tokens[0]);
-			    System.out.println("Token 1: " + tokens[1]);
-			    System.out.println("Token 2: " + tokens[2]);
-			    
-			    try{							//responsible for moving lines.
-			    	line = reader.readLine();
-			    } catch (IOException e) {
-			    	System.out.println(e.toString());
+		//Flawed in the case of an empty file being passed in
+		String line = reader.readLine();
+		while( (line) != null) {
+			
+		    System.out.println(line); //Keeping for testing. 
+		    
+		    String[] tokens = line.split(" |, ");
+		    for(int i = 0; i<3; i++){
+			    if(tokens[i] != null){
+			    	System.out.println("Token "+ i +": " + tokens[i]);
 			    }
-			}
+		    }
+
+//		    System.out.println("Token 0: " + tokens[0]);
+//		    System.out.println("Token 1: " + tokens[1]);
+//		    System.out.println("Token 2: " + tokens[2]);
+//		    System.out.println("Token 3: " + tokens[3]);
+		    
+		    
+		    try{							//responsible for moving lines.
+		    	line = reader.readLine();
+		    } catch (IOException e) {
+		    	System.out.println(e.toString());
+		    }
+		}
 		
+		System.out.println(registerHash.get("$zero"));
+	
 		
 			
 	}
