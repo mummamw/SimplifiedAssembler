@@ -99,14 +99,20 @@ public class Assembler {
 			rHash.put("jr",  "001000");
 	
 		//While loop containing more lines
-		//Variables that will be used in while loop
-		String holderText = "";
-		String holderBin = "";
-		String holderHex = "";
+//		//Variables that will be used in while loop
+//		String holderText = "";
+//		String holderBin = "";
+//		String holderHex = "";
 			
 		//Flawed in the case of an empty file being passed in
 		String line = reader.readLine();
 		while( (line) != null) {
+			
+			//Variables that will be used in while loop
+			String holderText = "";
+			String holderBin = "";
+			String holderHex = "";
+			String addressHolder;
 			
 		    System.out.println(line); //Keeping for testing. 
 		    
@@ -114,14 +120,49 @@ public class Assembler {
 		    String[] tokens = line.split(" |, ");
 		    
 		    switch(typeHash.get(tokens[0])){
+		    
+		    // RFormat
 		    case 0:
 		    	System.out.println("RFormat");
+		    	holderBin += "000000";				//RFormat op always 000000
+		    	holderBin += registerHash.get(tokens[2]);	//rs
+		    	holderBin += registerHash.get(tokens[3]);	//rt
+		    	holderBin += registerHash.get(tokens[1]);	//rd
+		    	
+		    	//Shamt currently being faked
+		    	holderBin += "00000";
+		    	
+		    	holderBin += rHash.get(tokens[0]);
+		    	System.out.println(holderBin);
 		    	break;
+		    
+		    // IFormat
 		    case 1:
 		    	System.out.println("IFormat");
+		    	holderBin += iHash.get(tokens[0]);			//op - 6 bit
+		    	holderBin += registerHash.get(tokens[1]);	//rs - 5 bit
+		    	holderBin += registerHash.get(tokens[2]);	//rt - 5 bit
+		    	
+		    	//Constant section that needs to be 16 bits long
+		    	addressHolder = registerHash.get(tokens[3]);
+		    	if (addressHolder == null) { 	//Assuming null return means it was a constant
+		    		addressHolder = tokens[3];
+		    		int n = Integer.parseInt(addressHolder);
+		    		addressHolder = Integer.toBinaryString(n);
+		    	}
+		    	String padded = "0000000000000000";
+		    	holderBin += padded.substring(addressHolder.length()) + addressHolder;
+		    	
+		    	System.out.println(holderBin);
 		    	break;
+		    	
+		    // JFormat
 		    case 2:
 		    	System.out.println("JFormat");
+		    	holderBin += jHash.get(tokens[0]);
+		    	//Constant section the needs to be 26 bits
+		    	
+		    	System.out.println(holderBin);
 		    	break;
 		    }
 		    
@@ -165,6 +206,8 @@ public class Assembler {
 //		    
 //		    //Writing out 
 //		    writer.println(holderBin);
+		    
+		    
 		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
