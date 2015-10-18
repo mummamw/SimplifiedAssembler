@@ -132,9 +132,7 @@ public class Assembler {
 		    	} else {
 		    		holderBin += registerHash.get(tokens[2]);
 		    	}
-		    	//holderBin += registerHash.get(tokens[2]);	/////////rs - 5 bit
-		    	
-		    	//holderBin += registerHash.get(tokens[3]);	//rt - 5 bit
+		    
 		    	constantHolder =  registerHash.get(tokens[3]);
 		    	if (constantHolder == null) { 	//Assuming null return means it was a constant
 		    		constantHolder = tokens[3];
@@ -153,8 +151,6 @@ public class Assembler {
 		    	} else {
 		    		holderBin += "00000";
 		    	}
-		    	
-		    	
 		    	
 		    	holderBin += rHash.get(tokens[0]);
 		    	System.out.println(holderBin);
@@ -248,17 +244,26 @@ public class Assembler {
 
 		    
 		    
-//		    System.out.println("holderBin is currently: " + holderBin);
-//		    
-//		    BigInteger holderBigInt = new BigInteger(holderBin);
-//		    
-//		    System.out.println("holderBigInt :" + holderBigInt);
-//		    
-//		    holderHex = holderBigInt.toString(16);
-//		    System.out.println(holderHex);
-//		    
-//		    //Writing out 
-//		    writer.println(holderBin);
+		    System.out.println("holderBin is currently: " + holderBin);
+		    
+		    //BigInteger holderBigInt = new BigInteger(holderBin);
+		    
+		   // System.out.println("holderBigInt :" + holderBigInt);
+		    
+		   
+		    //Fails to keep leading 0's
+			    //holderHex = holderBigInt.toString(16);
+			    long decimal = Long.parseLong(holderBin,2);
+			    holderHex = Long.toString(decimal,16);
+			    //holderHex = Integer.toHexString(i)
+			 
+		    //Deleting the leading 0's is fine.
+		    //holderHex = Long.decode(holderBin).toString();
+		    
+		    System.out.println(holderHex);
+		    
+		    //Writing out 
+		    writer.println("0x" + holderHex);
 		   
 		    
 		    //NOT NEEDED just used for ease of reading console

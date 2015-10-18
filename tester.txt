@@ -1,7 +1,1 @@
-add $t0, $t1, 10
-lw $t0, $t1, $v1
-j $t0, $t1, $v1
-jal $t0, $t1, $v1
-addi $t0, $t1, 100
-sll $t0, $t1, $v1
-sll $t0, $t1, 20
+sw $t2, 1024($s2) # store the value in matrix element
