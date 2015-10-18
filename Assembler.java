@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.math.*;
 
 public class Assembler {
 	
@@ -78,6 +79,7 @@ public class Assembler {
 		//While loop containing more lines
 		//Variables that will be used in while loop
 		String holderText = "";
+		String holderBin = "";
 		String holderHex = "";
 			
 		//Flawed in the case of an empty file being passed in
@@ -96,23 +98,23 @@ public class Assembler {
 			    }
 			    if(i == 0){
 			    	System.out.println("Token[" + i + "]: " + rHash.get(tokens[i]));
-			    	holderHex += rHash.get(tokens[i]);
+			    	holderBin += rHash.get(tokens[i]);
 			    }
 			    if(i == 1) {
 			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderHex += registerHash.get(tokens[i]);
+			    	holderBin += registerHash.get(tokens[i]);
 			    }
 			    if(i == 2) {
 			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderHex += registerHash.get(tokens[i]);
+			    	holderBin += registerHash.get(tokens[i]);
 			    }
 			    if(i == 3){
 			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderHex += registerHash.get(tokens[i]);
+			    	holderBin += registerHash.get(tokens[i]);
 			    }
 		    
 			    System.out.println("holderText is currently: " + holderText);
-			    System.out.println("holderHex is currently:" + holderHex);
+			    System.out.println("holderBin is currently:" + holderBin);
 		    }
 
 //		    System.out.println("Token 0: " + tokens[0]);
@@ -121,8 +123,17 @@ public class Assembler {
 //		    System.out.println("Token 3: " + tokens[3]);
 		    
 		    
+		    System.out.println("holderBin is currently: " + holderBin);
+		    
+		    BigInteger holderBigInt = new BigInteger(holderBin);
+		    
+		    System.out.println("holderBigInt :" + holderBigInt);
+		    
+		    holderHex = holderBigInt.toString(16);
+		    System.out.println(holderHex);
+		    
 		    //Writing out 
-		    writer.println(holderHex);
+		    writer.println(holderBin);
 		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
