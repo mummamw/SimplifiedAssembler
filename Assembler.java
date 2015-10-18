@@ -4,7 +4,6 @@ import java.math.*;
 
 public class Assembler {
 	
-	
 	public static void main(String[] args) throws IOException{
 		
 		// Opening input file 
@@ -98,18 +97,16 @@ public class Assembler {
 			rHash.put("srl", "000010");
 			rHash.put("jr",  "001000");
 	
-		//Flawed in the case of an empty file being passed in
+		// Loop translates line by line.
 		String line = reader.readLine();
 		while( (line) != null) {
 			
 			//Variables that will be used in while loop
-			String holderText = "";
 			String holderBin = "";
 			String holderHex = "";
 			String addressHolder;
 			String constantHolder;
 			
-		    //System.out.println(line); //Keeping for testing. 
 		    
 		    // Splitting string into tokens[] 
 		    String[] tokens = line.split(" |, ");
@@ -118,40 +115,32 @@ public class Assembler {
 		    
 		    // RFormat General
 		    case 0:
-		    	//System.out.println("RFormat");
 		    	holderBin += "000000";						//op - 6 bit
 		    	
 				if(rHash.get(tokens[0]) == "000000"){		//rs - 5 bit
 					holderBin += "00000";
-		    	} else {
-		    		holderBin += registerHash.get(tokens[2]);
-		    	}
+		    	} else { holderBin += registerHash.get(tokens[2]); }
 		    
+				//Checks if there is a constant in the token[3]
 		    	constantHolder =  registerHash.get(tokens[3]);	//rt - 5 bit
 		    	if (constantHolder == null) { 	//Assuming null return means it was a constant
 		    		constantHolder = tokens[3];
 		    		int n = Integer.parseInt(constantHolder);
 		    		constantHolder = Integer.toBinaryString(n);
 		    		holderBin += constantHolder + "00000".substring(constantHolder.length());
-		    	} else{
-		    		holderBin += registerHash.get(tokens[3]);
-		    	} 	
+		    	} else{ holderBin += registerHash.get(tokens[3]); } 	
 		    												
 		    	holderBin += registerHash.get(tokens[1]);	//rd - 5 bit
 		    	
 		    	if(rHash.get(tokens[0]) == "000000"){	   	//shamt - 5 bit
 		    		holderBin += constantHolder + "00000".substring(constantHolder.length());
-		    	} else {
-		    		holderBin += "00000";
-		    	}
+		    	} else { holderBin += "00000";}
 		    	
 		    	holderBin += rHash.get(tokens[0]);			//funct - 5 bit
-		    	//System.out.println(holderBin);
 		    	break;
 		    
 		    // IFormat
 		    case 1:
-		    	//System.out.println("IFormat");
 		    	holderBin += iHash.get(tokens[0]);			//op - 6 bit
 		    	holderBin += registerHash.get(tokens[1]);	//rs - 5 bit
 		    	holderBin += registerHash.get(tokens[2]);	//rt - 5 bit
@@ -165,12 +154,10 @@ public class Assembler {
 		    	}
 		    	String padded16 = "0000000000000000";
 		    	holderBin += padded16.substring(addressHolder.length()) + addressHolder;	
-		    	//System.out.println(holderBin);
 		    	break;
 		    	
 		    // JFormat
 		    case 2:
-		    	//System.out.println("JFormat");
 		    	holderBin += jHash.get(tokens[0]);
 		    	
 		    	//Constant section the needs to be 26 bits
@@ -182,25 +169,19 @@ public class Assembler {
 		    	}
 		    	String padded26 = "00000000000000000000000000";
 		    	holderBin += padded26.substring(addressHolder.length()) + addressHolder;		    
-		    	//System.out.println(holderBin);
 		    	break;
 		    }
 		    
 		    
-		    //System.out.println("holderBin is currently: " + holderBin);
-		   
-		    //Converting Binary String to Long to be writen as Hex to holderHex
+		    //Converting Binary String to Long to be written as Hex to holderHex
 			long decimal = Long.parseLong(holderBin,2);
 			holderHex = Long.toString(decimal,16);
 		    
-		    //System.out.println(holderHex);
-		    
-		    //Writing out 
+		    //Writing out to file it 0x denoting hexadecimal notation 
 		    writer.println("0x" + holderHex);
 		   
-		    //System.out.println("Holderbin length: " + holderBin.length());
-		    
-		    try{							//responsible for moving lines.
+		    //Moves to next line if available.
+		    try{			
 		    	line = reader.readLine();
 		    } catch (IOException e) {
 		    	System.out.println(e.toString());
