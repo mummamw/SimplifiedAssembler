@@ -1,1 +1,6 @@
 add $t0, $t1, $v1
+lw $t0, $t1, $v1
+j $t0, $t1, $v1
+jal $t0, $t1, $v1
+addi $t0, $t1, $v1
+add $t0, $t1, $v1

@@ -47,13 +47,35 @@ public class Assembler {
 			registerHash.put("$t9",   "11001");
 	
 		// Hash Table for J format instructions
-		//op codes should always be 6 bits
+		// op codes should always be 6 bits
 		Hashtable<String, String> jHash = new Hashtable<String, String>();
 			jHash.put("j",   "000010");
 			jHash.put("jal", "000011");
+			
+		//hash Table for figuring out the format that will be used
+		// Rformat=0 Iformat=1 Jformat=2
+		Hashtable<String, Integer> typeHash = new Hashtable<String, Integer>();
+			typeHash.put("add",  0);
+			typeHash.put("sub",  0);
+			typeHash.put("and",  0);
+			typeHash.put("or",   0);
+			typeHash.put("sll",  0);
+			typeHash.put("slt",  0);
+			typeHash.put("srl",  0);
+			typeHash.put("jr",   0);
+			typeHash.put("lw",   1);
+			typeHash.put("sw",   1);
+			typeHash.put("andi", 1);
+			typeHash.put("ori",  1);
+			typeHash.put("lui",  1);
+			typeHash.put("beq",  1);
+			typeHash.put("stli", 1);
+			typeHash.put("addi", 1);
+			typeHash.put("j",    2);
+			typeHash.put("jal",  2);
 
 		// Hash Table for I format instructions 
-		//op codes should always be 6 bits
+		// op codes should always be 6 bits
 		Hashtable<String, String> iHash = new Hashtable<String, String>();
 			iHash.put("lw",   "100011");
 			iHash.put("sw",   "101011");
@@ -91,49 +113,58 @@ public class Assembler {
 		    // Splitting string into tokens[] 
 		    String[] tokens = line.split(" |, ");
 		    
-		    for(int i = 0; i<4; i++){
-			    if(tokens[i] != null){
-			    	System.out.println("Token "+ i +": " + tokens[i]);
-			    	holderText += tokens[i];
-			    }
-			    if(i == 0){
-			    	System.out.println("Token[" + i + "]: " + rHash.get(tokens[i]));
-			    	holderBin += rHash.get(tokens[i]);
-			    }
-			    if(i == 1) {
-			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderBin += registerHash.get(tokens[i]);
-			    }
-			    if(i == 2) {
-			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderBin += registerHash.get(tokens[i]);
-			    }
-			    if(i == 3){
-			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
-			    	holderBin += registerHash.get(tokens[i]);
-			    }
-		    
-			    System.out.println("holderText is currently: " + holderText);
-			    System.out.println("holderBin is currently:" + holderBin);
+		    switch(typeHash.get(tokens[0])){
+		    case 0:
+		    	System.out.println("RFormat");
+		    	break;
+		    case 1:
+		    	System.out.println("IFormat");
+		    	break;
+		    case 2:
+		    	System.out.println("JFormat");
+		    	break;
 		    }
+		    
+		    
+//		    for(int i = 0; i<4; i++){
+//			    if(tokens[i] != null){
+//			    	System.out.println("Token "+ i +": " + tokens[i]);
+//			    	holderText += tokens[i];
+//			    }
+//			    if(i == 0){
+//			    	System.out.println("Token[" + i + "]: " + rHash.get(tokens[i]));
+//			    	holderBin += rHash.get(tokens[i]);
+//			    }
+//			    if(i == 1) {
+//			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+//			    	holderBin += registerHash.get(tokens[i]);
+//			    }
+//			    if(i == 2) {
+//			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+//			    	holderBin += registerHash.get(tokens[i]);
+//			    }
+//			    if(i == 3){
+//			    	System.out.println("Token[" + i + "]: " + registerHash.get(tokens[i]));
+//			    	holderBin += registerHash.get(tokens[i]);
+//			    }
+//		    
+//			    System.out.println("holderText is currently: " + holderText);
+//			    System.out.println("holderBin is currently:" + holderBin);
+//		    }
 
-//		    System.out.println("Token 0: " + tokens[0]);
-//		    System.out.println("Token 1: " + tokens[1]);
-//		    System.out.println("Token 2: " + tokens[2]);
-//		    System.out.println("Token 3: " + tokens[3]);
 		    
 		    
-		    System.out.println("holderBin is currently: " + holderBin);
-		    
-		    BigInteger holderBigInt = new BigInteger(holderBin);
-		    
-		    System.out.println("holderBigInt :" + holderBigInt);
-		    
-		    holderHex = holderBigInt.toString(16);
-		    System.out.println(holderHex);
-		    
-		    //Writing out 
-		    writer.println(holderBin);
+//		    System.out.println("holderBin is currently: " + holderBin);
+//		    
+//		    BigInteger holderBigInt = new BigInteger(holderBin);
+//		    
+//		    System.out.println("holderBigInt :" + holderBigInt);
+//		    
+//		    holderHex = holderBigInt.toString(16);
+//		    System.out.println(holderHex);
+//		    
+//		    //Writing out 
+//		    writer.println(holderBin);
 		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
