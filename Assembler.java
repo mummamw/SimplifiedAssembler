@@ -80,9 +80,13 @@ public class Assembler {
 			//Flawed in the case of an empty file being passed in
 			String line = reader.readLine();
 			while( (line) != null) {
-			    System.out.println(line);
+			    System.out.println(line); //Keeping for testing. 
+			    String[] tokens = line.split(" ");
+			    System.out.println("Token 0: " + tokens[0]);
+			    System.out.println("Token 1: " + tokens[1]);
+			    System.out.println("Token 2: " + tokens[2]);
 			    
-			    try{
+			    try{							//responsible for moving lines.
 			    	line = reader.readLine();
 			    } catch (IOException e) {
 			    	System.out.println(e.toString());
