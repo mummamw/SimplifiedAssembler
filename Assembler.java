@@ -122,7 +122,7 @@ public class Assembler {
 		    
 		    
 		    //Writing out 
-		    writer.println("Hello World");
+		    writer.println(holderHex);
 		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
