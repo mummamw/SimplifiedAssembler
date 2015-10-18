@@ -113,6 +113,7 @@ public class Assembler {
 			String holderBin = "";
 			String holderHex = "";
 			String addressHolder;
+			String constantHolder;
 			
 		    System.out.println(line); //Keeping for testing. 
 		    
@@ -121,16 +122,39 @@ public class Assembler {
 		    
 		    switch(typeHash.get(tokens[0])){
 		    
-		    // RFormat
+		    // RFormat General
 		    case 0:
 		    	System.out.println("RFormat");
-		    	holderBin += "000000";				//RFormat op always 000000
-		    	holderBin += registerHash.get(tokens[2]);	//rs
-		    	holderBin += registerHash.get(tokens[3]);	//rt
-		    	holderBin += registerHash.get(tokens[1]);	//rd
+		    	holderBin += "000000";						//op - 6 bit
 		    	
-		    	//Shamt currently being faked
-		    	holderBin += "00000";
+				if(rHash.get(tokens[0]) == "000000"){		//rs - 5 bit
+					holderBin += "00000";
+		    	} else {
+		    		holderBin += registerHash.get(tokens[2]);
+		    	}
+		    	//holderBin += registerHash.get(tokens[2]);	/////////rs - 5 bit
+		    	
+		    	//holderBin += registerHash.get(tokens[3]);	//rt - 5 bit
+		    	constantHolder =  registerHash.get(tokens[3]);
+		    	if (constantHolder == null) { 	//Assuming null return means it was a constant
+		    		constantHolder = tokens[3];
+		    		int n = Integer.parseInt(constantHolder);
+		    		constantHolder = Integer.toBinaryString(n);
+		    		holderBin += constantHolder + "00000".substring(constantHolder.length());
+		    	} else{
+		    		holderBin += registerHash.get(tokens[3]);
+		    	}
+		    	
+		    												//should be rt - 5 bit
+		    	holderBin += registerHash.get(tokens[1]);	//rd - 5 bit
+		    	
+		    	if(rHash.get(tokens[0]) == "000000"){
+		    		holderBin += constantHolder + "00000".substring(constantHolder.length());
+		    	} else {
+		    		holderBin += "00000";
+		    	}
+		    	
+		    	
 		    	
 		    	holderBin += rHash.get(tokens[0]);
 		    	System.out.println(holderBin);
@@ -150,8 +174,8 @@ public class Assembler {
 		    		int n = Integer.parseInt(addressHolder);
 		    		addressHolder = Integer.toBinaryString(n);
 		    	}
-		    	String padded = "0000000000000000";
-		    	holderBin += padded.substring(addressHolder.length()) + addressHolder;
+		    	String padded16 = "0000000000000000";
+		    	holderBin += padded16.substring(addressHolder.length()) + addressHolder;
 		    	
 		    	System.out.println(holderBin);
 		    	break;
@@ -160,10 +184,39 @@ public class Assembler {
 		    case 2:
 		    	System.out.println("JFormat");
 		    	holderBin += jHash.get(tokens[0]);
-		    	//Constant section the needs to be 26 bits
 		    	
+		    	//Constant section the needs to be 26 bits
+		    	addressHolder = registerHash.get(tokens[1]);
+		    	if (addressHolder == null) { 	//Assuming null return means it was a constant
+		    		addressHolder = tokens[1];
+		    		int n = Integer.parseInt(addressHolder);
+		    		addressHolder = Integer.toBinaryString(n);
+		    	}
+		    	String padded26 = "00000000000000000000000000";
+		    	holderBin += padded26.substring(addressHolder.length()) + addressHolder;
+		    
 		    	System.out.println(holderBin);
 		    	break;
+		   
+//		    case 3:
+//		    	System.out.println("RFormat sll");
+//		    	holderBin += "000000";						//op - 6 bit
+//		    	holderBin += registerHash.get(tokens[2]);	//rs - 5 bit
+//		    	//holderBin += registerHash.get(tokens[3]);	//rt - 5 bit		    	
+//		    	holderBin += registerHash.get(tokens[1]);	//rd - 5 bit
+//		    	
+//		    	constantHolder =  registerHash.get(tokens[3]);
+//		    	if (constantHolder == null) { 	//Assuming null return means it was a constant
+//		    		constantHolder = tokens[3];
+//		    		int n = Integer.parseInt(constantHolder);
+//		    		constantHolder = Integer.toBinaryString(n);
+//		    	}
+//		    	String padded5 = "00000";
+//		    	holderBin += padded5.substring(constantHolder.length()) + constantHolder;
+//
+//		    	holderBin += rHash.get(tokens[0]); 			//func - 5 bit
+//		    	System.out.println(holderBin);
+//		    	break;	
 		    }
 		    
 		    
@@ -206,8 +259,11 @@ public class Assembler {
 //		    
 //		    //Writing out 
 //		    writer.println(holderBin);
+		   
 		    
-		    
+		    //NOT NEEDED just used for ease of reading console
+//		    System.out.println();
+		    System.out.println("Holderbin length: " + holderBin.length());
 		    
 		    try{							//responsible for moving lines.
 		    	line = reader.readLine();
